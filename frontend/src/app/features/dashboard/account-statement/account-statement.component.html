@@ -1,0 +1,95 @@
+<div class="glass-animate-in">
+  <h1 class="dash-page-title">Account Statement</h1>
+  <p class="dash-page-subtitle">Filter, view, and export your account transactions by date range.</p>
+
+  <div class="glass-card statement-filter-card">
+    <form [formGroup]="filterForm" (ngSubmit)="onSubmit()" class="statement-filter-form">
+      <div class="glass-input-group">
+        <label class="glass-label">From Date</label>
+        <input class="glass-input" type="date" formControlName="fromDate" />
+      </div>
+      <div class="glass-input-group">
+        <label class="glass-label">To Date</label>
+        <input class="glass-input" type="date" formControlName="toDate" />
+      </div>
+      <div class="statement-action-btns">
+        <button type="submit" class="glass-btn glass-btn--primary statement-filter-btn" [disabled]="loading()">
+          {{ loading() ? 'Fetching...' : 'Generate Statement' }}
+        </button>
+        @if (searched() && !loading() && transactions() && transactions()!.length > 0) {
+          <button type="button" class="glass-btn glass-btn--secondary statement-filter-btn statement-print-btn no-print" (click)="printStatement()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+            Print Statement
+          </button>
+        }
+      </div>
+    </form>
+  </div>
+
+  @if (errorMessage()) { <div class="glass-alert glass-alert--error">{{ errorMessage() }}</div> }
+
+  @if (searched() && !loading() && transactions()) {
+    <div id="printable-statement">
+    <!-- Financial Metric Summary Chips -->
+    <div class="statement-summary-row">
+      <div class="glass-panel statement-summary-chip">
+        <div class="statement-chip-label">Total Credit Inflow</div>
+        <div class="summary-amount-credit">+₹{{ totalCredit | number: '1.2-2' }}</div>
+      </div>
+      <div class="glass-panel statement-summary-chip">
+        <div class="statement-chip-label">Total Debit Outflow</div>
+        <div class="summary-amount-debit">-₹{{ totalDebit | number: '1.2-2' }}</div>
+      </div>
+      <div class="glass-panel statement-summary-chip">
+        <div class="statement-chip-label">Total Transactions</div>
+        <div class="statement-chip-value">{{ transactions()?.length || 0 }}</div>
+      </div>
+    </div>
+
+    <!-- Statement Table Card -->
+    <div class="glass-card statement-table-card">
+      @if (transactions()!.length === 0) {
+        <div class="statement-empty-state">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+          <p>No transactions found for the selected date range.</p>
+        </div>
+      } @else {
+        <div class="summary-table-wrapper">
+          <table class="summary-txn-table">
+            <thead>
+              <tr>
+                <th>Reference ID</th>
+                <th>Mode</th>
+                <th>Direction</th>
+                <th>To / From A/C</th>
+                <th>Amount</th>
+                <th>Remarks</th>
+                <th>Date & Time</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (t of transactions(); track t.referenceId) {
+                <tr>
+                  <td><code>{{ t.referenceId }}</code></td>
+                  <td><span class="summary-mode-badge">{{ t.mode }}</span></td>
+                  <td>
+                    <span class="glass-badge" [class.glass-badge--success]="t.direction === 'CREDIT'" [class.glass-badge--warning]="t.direction === 'DEBIT'">
+                      {{ t.direction }}
+                    </span>
+                  </td>
+                  <td>{{ t.direction === 'CREDIT' ? t.fromAccountNumber : t.toAccountNumber }}</td>
+                  <td [class.summary-amount-credit]="t.direction === 'CREDIT'" [class.summary-amount-debit]="t.direction === 'DEBIT'">
+                    {{ t.direction === 'CREDIT' ? '+' : '-' }}₹{{ t.amount | number: '1.2-2' }}
+                  </td>
+                  <td>{{ t.remarks || '-' }}</td>
+                  <td>{{ t.transactionDatetime | date: 'MMM d, y · h:mm a' }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      }
+    </div>
+    </div>
+  }
+</div>

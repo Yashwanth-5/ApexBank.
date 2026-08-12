@@ -1,0 +1,88 @@
+# ============================================================
+# ApexBank – Git Ignore Rules
+# Covers: Java/Spring Boot/Maven, Angular, Eclipse, IntelliJ,
+#         VS Code, macOS, Docker generated files
+# ============================================================
+
+# ── Eclipse ─────────────────────────────────────────────────
+.metadata/
+RemoteSystemsTempFiles/
+.project
+.classpath
+.factorypath
+.settings/
+*.launch
+.springBeans
+.sts4-cache/
+
+# ── IntelliJ IDEA ────────────────────────────────────────────
+.idea/
+*.iml
+*.iws
+*.ipr
+out/
+
+# ── VS Code ──────────────────────────────────────────────────
+.vscode/
+
+# ── Maven build output ───────────────────────────────────────
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+# ── Java generated / compiled ────────────────────────────────
+*.class
+*.jar
+*.war
+*.ear
+*.nar
+hs_err_pid*
+replay_pid*
+META-INF/MANIFEST.MF
+**/META-INF/MANIFEST.MF
+
+# ── Angular build output ─────────────────────────────────────
+dist/
+.angular/
+frontend/dist/
+frontend/.angular/
+
+# ── Node / npm ───────────────────────────────────────────────
+node_modules/
+frontend/node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.npm
+
+# ── Logs ─────────────────────────────────────────────────────
+*.log
+logs/
+
+# ── Environment / secrets ────────────────────────────────────
+.env
+.env.*
+*.env
+secrets.yml
+secrets.yaml
+
+# ── OS generated ─────────────────────────────────────────────
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# ── Docker ───────────────────────────────────────────────────
+# (keep docker-compose.yml and Dockerfiles — they are source)
+
+# ── Temporary / misc ─────────────────────────────────────────
+*.swp
+*.swo
+*.tmp
+*.bak
+*.orig
+fix-*.sh

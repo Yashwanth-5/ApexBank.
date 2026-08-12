@@ -1,0 +1,82 @@
+<div class="glass-page">
+  <div class="glass-card glass-form-wrapper glass-animate-in">
+
+    <!-- Brand mark -->
+    <div class="auth-brand-row">
+      <span class="auth-brand-label">ApexBank</span>
+    </div>
+
+    <h1 class="glass-title">Create Internet Banking Access</h1>
+    <p class="glass-subtitle">Set up your online banking credentials</p>
+
+    @if (errorMessage()) { <div class="glass-alert glass-alert--error">{{ errorMessage() }}</div> }
+    @if (successMessage()) { <div class="glass-alert glass-alert--success">{{ successMessage() }}</div> }
+    @if (devOtp()) { <div class="glass-alert glass-alert--info">🔑 Demo OTP: <strong>{{ devOtp() }}</strong></div> }
+
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+      <div class="glass-input-group">
+        <label class="glass-label">Account Number</label>
+        <input class="glass-input" type="text" formControlName="accountNumber"
+          placeholder="Enter your account number" />
+      </div>
+
+      <div class="register-password-pair">
+        <div class="glass-input-group">
+          <label class="glass-label">Login Password</label>
+          <input class="glass-input" type="password" formControlName="loginPassword"
+            placeholder="Minimum 8 characters" />
+        </div>
+        <div class="glass-input-group">
+          <label class="glass-label">Confirm Login Password</label>
+          <input class="glass-input" type="password" formControlName="confirmLoginPassword"
+            placeholder="Re-enter login password" />
+          @if (registerForm.errors?.['mismatch'] && registerForm.get('confirmLoginPassword')?.touched) {
+          <span class="glass-error-text">Passwords do not match</span>
+          }
+        </div>
+      </div>
+
+      <div class="register-password-pair">
+        <div class="glass-input-group">
+          <label class="glass-label">Transaction Password</label>
+          <input class="glass-input" type="password" formControlName="transactionPassword"
+            placeholder="Minimum 6 characters" />
+        </div>
+        <div class="glass-input-group">
+          <label class="glass-label">Confirm Transaction Password</label>
+          <input class="glass-input" type="password" formControlName="confirmTransactionPassword"
+            placeholder="Re-enter transaction password" />
+        </div>
+      </div>
+
+      <div class="glass-input-group">
+        <label class="glass-label">OTP Verification</label>
+        <div class="register-otp-row">
+          <input class="glass-input" type="text" formControlName="otp" placeholder="6-digit OTP" />
+          <button type="button" class="glass-btn glass-btn--secondary register-otp-btn" (click)="sendOtp()"
+            [disabled]="otpSending()">
+            @if (otpSending()) {
+            <span>Sending…</span>
+            } @else if (otpSent()) {
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+              stroke-linecap="round">
+              <polyline points="20 6 9 17 4 12" />
+            </svg>
+            Resend OTP
+            } @else {
+            Send OTP
+            }
+          </button>
+        </div>
+      </div>
+
+      <button type="submit" class="glass-btn glass-btn--primary glass-btn--full register-submit-btn"
+        [disabled]="loading()">
+        {{ loading() ? 'Registering…' : 'Activate Internet Banking' }}
+      </button>
+    </form>
+
+    <hr class="glass-divider" />
+    <a routerLink="/login" class="glass-link">← Already registered? Login</a>
+  </div>
+</div>

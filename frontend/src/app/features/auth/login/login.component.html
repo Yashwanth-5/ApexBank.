@@ -1,0 +1,76 @@
+<div class="glass-page">
+  <div class="glass-card glass-form-wrapper glass-animate-in login-card">
+
+    <!-- Brand Mark -->
+    <div class="auth-brand-row">
+      <span class="auth-brand-label">ApexBank</span>
+    </div>
+
+    <h1 class="glass-title">Welcome Back</h1>
+    <p class="glass-subtitle">Sign in to your internet banking account</p>
+
+    @if (errorMessage()) { <div class="glass-alert glass-alert--error">{{ errorMessage() }}</div> }
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <div class="glass-input-group">
+        <label class="glass-label" for="login-userid">User ID</label>
+        <input id="login-userid" class="glass-input" type="text" formControlName="userId"
+          placeholder="Enter your User ID" autocomplete="username" />
+        @if (loginForm.get('userId')?.invalid && loginForm.get('userId')?.touched) {
+        <span class="glass-error-text">User ID is required</span>
+        }
+      </div>
+
+      <div class="glass-input-group">
+        <label class="glass-label" for="login-password">Password</label>
+        <div class="login-password-wrapper">
+          <input id="login-password" class="glass-input login-password-input"
+            [type]="showPassword() ? 'text' : 'password'" formControlName="password" placeholder="Enter your password"
+            autocomplete="current-password" />
+          <button type="button" class="login-eye-btn" (click)="togglePasswordVisibility()"
+            [attr.aria-label]="showPassword() ? 'Hide password' : 'Show password'">
+            @if (showPassword()) {
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94" />
+              <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19" />
+              <line x1="1" y1="1" x2="23" y2="23" />
+            </svg>
+            } @else {
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+              <circle cx="12" cy="12" r="3" />
+            </svg>
+            }
+          </button>
+        </div>
+        @if (loginForm.get('password')?.invalid && loginForm.get('password')?.touched) {
+        <span class="glass-error-text">Password is required</span>
+        }
+      </div>
+
+      <button type="submit" class="glass-btn glass-btn--primary glass-btn--full login-submit" [disabled]="loading()">
+        @if (loading()) {
+        <span class="login-spinner"></span>
+        Signing in…
+        } @else {
+        Sign In
+        }
+      </button>
+    </form>
+
+    <div class="login-footer-links">
+      <a routerLink="/register" class="glass-link">First Time User? Register</a>
+    </div>
+    <div class="login-footer-links">
+      <a routerLink="/forgot-user-id" class="glass-link">Forgot User ID?</a>
+      <a routerLink="/forgot-password" class="glass-link">Forgot Password?</a>
+    </div>
+
+    <hr class="glass-divider" />
+    <div class="login-back-row">
+      <a routerLink="/home" class="glass-link">← Back to Home</a>
+    </div>
+  </div>
+</div>

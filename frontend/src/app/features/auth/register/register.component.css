@@ -1,0 +1,58 @@
+.auth-brand-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: var(--space-md);
+}
+
+.auth-logo {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--color-accent-primary), var(--color-accent-secondary));
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(10, 132, 255, 0.3);
+}
+
+.auth-brand-label {
+  font-size: var(--font-size-md);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  background: linear-gradient(135deg, var(--color-accent-primary), var(--color-accent-secondary));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.register-password-pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-md);
+}
+
+.register-otp-row {
+  display: flex;
+  gap: var(--space-sm);
+}
+
+.register-otp-row .glass-input {
+  flex: 1;
+}
+
+.register-otp-btn {
+  white-space: nowrap;
+  padding: 0 20px;
+}
+
+@media (max-width: 600px) {
+  .register-password-pair {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+}

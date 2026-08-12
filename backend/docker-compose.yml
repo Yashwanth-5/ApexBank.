@@ -1,0 +1,90 @@
+# ApexBank Microservices - Docker Compose
+# Brings up MySQL (3 separate DBs) + all 5 Spring Boot services.
+# Run: docker-compose up --build
+# NOTE: build each service jar first with `mvn clean package -DskipTests`
+#       from the root, or add a Dockerfile-based multi-stage build per
+#       service if you want Docker to build the jars itself.
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: apexbank-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: apexbank_auth_db
+    ports:
+      - "3306:3306"
+    volumes:
+      - apexbank-mysql-data:/var/lib/mysql
+      - ./auth-service/src/main/resources/db/schema.sql:/docker-entrypoint-initdb.d/1-auth-schema.sql
+      - ./account-service/src/main/resources/db/schema.sql:/docker-entrypoint-initdb.d/2-account-schema.sql
+      - ./account-service/src/main/resources/db/data.sql:/docker-entrypoint-initdb.d/3-account-data.sql
+      - ./transaction-service/src/main/resources/db/schema.sql:/docker-entrypoint-initdb.d/4-txn-schema.sql
+      - ./transaction-service/src/main/resources/db/data.sql:/docker-entrypoint-initdb.d/5-txn-data.sql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  eureka-server:
+    build: ./eureka-server
+    container_name: apexbank-eureka
+    ports:
+      - "8761:8761"
+
+  api-gateway:
+    build: ./api-gateway
+    container_name: apexbank-gateway
+    ports:
+      - "8080:8080"
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka/
+    depends_on:
+      - eureka-server
+
+  auth-service:
+    build: ./auth-service
+    container_name: apexbank-auth-service
+    ports:
+      - "8081:8081"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/apexbank_auth_db?useSSL=false&serverTimezone=UTC
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka/
+    depends_on:
+      mysql:
+        condition: service_healthy
+      eureka-server:
+        condition: service_started
+
+  account-service:
+    build: ./account-service
+    container_name: apexbank-account-service
+    ports:
+      - "8082:8082"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/apexbank_account_db?useSSL=false&serverTimezone=UTC
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka/
+    depends_on:
+      mysql:
+        condition: service_healthy
+      eureka-server:
+        condition: service_started
+
+  transaction-service:
+    build: ./transaction-service
+    container_name: apexbank-transaction-service
+    ports:
+      - "8084:8084"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/apexbank_txn_db?useSSL=false&serverTimezone=UTC
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka/
+    depends_on:
+      mysql:
+        condition: service_healthy
+      eureka-server:
+        condition: service_started
+
+volumes:
+  apexbank-mysql-data:

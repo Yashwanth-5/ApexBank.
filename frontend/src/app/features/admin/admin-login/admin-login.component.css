@@ -1,0 +1,94 @@
+.admin-login-card {
+  position: relative;
+}
+
+/* Purple glow ring on the card */
+.admin-login-card::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(135deg, rgba(191, 90, 242, 0.35), rgba(94, 92, 230, 0.35));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* Shield icon container */
+.admin-login-shield {
+  width: 68px;
+  height: 68px;
+  border-radius: 20px;
+  background: linear-gradient(135deg, rgba(191, 90, 242, 0.15), rgba(94, 92, 230, 0.15));
+  border: 1.5px solid rgba(191, 90, 242, 0.28);
+  color: #bf5af2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto var(--space-lg);
+  box-shadow: 0 8px 24px -6px rgba(191, 90, 242, 0.30);
+}
+
+/* Password wrapper */
+.admin-password-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.admin-password-input {
+  padding-right: 52px;
+}
+
+/* Eye toggle (reuse login-eye-btn) */
+.login-eye-btn {
+  position: absolute;
+  right: 14px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  color: var(--color-text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-xs);
+  transition: color var(--transition-fast), background var(--transition-fast);
+}
+
+.login-eye-btn:hover {
+  color: var(--color-text-primary);
+  background: var(--color-glass-border-subtle);
+}
+
+.login-eye-btn:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+
+.admin-login-submit {
+  margin-top: var(--space-xs);
+}
+
+/* Spinner */
+.admin-login-spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  flex-shrink: 0;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.login-back-row {
+  display: flex;
+  justify-content: center;
+}

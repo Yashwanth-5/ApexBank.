@@ -1,0 +1,106 @@
+<div class="glass-animate-in">
+  <h1 class="dash-page-title">Account Summary</h1>
+  <p class="dash-page-subtitle">A comprehensive breakdown of your account and digital card access.</p>
+
+  @if (errorMessage()) { <div class="glass-alert glass-alert--error">{{ errorMessage() }}</div> }
+
+  @if (loading()) {
+    <div class="glass-card dash-loading-card">Loading account summary...</div>
+  } @else {
+    @if (summary(); as s) {
+
+      <div class="summary-top-grid">
+        <!-- Virtual Metallic Debit Card -->
+        <div class="summary-virtual-card glass-animate-in">
+          <div class="summary-card-bg-shine"></div>
+          <div class="summary-card-brand">
+            <span class="summary-card-bank-name">ApexBank</span>
+            <span class="summary-card-type">WORLD ELITE</span>
+          </div>
+
+          <div class="summary-card-chip">
+            <svg width="40" height="30" viewBox="0 0 38 28" fill="none"><rect x="1" y="1" width="36" height="26" rx="4" fill="rgba(255,255,255,0.25)" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/><rect x="6" y="8" width="10" height="13" rx="2" fill="rgba(255,255,255,0.3)"/><line x1="1" y1="14" x2="37" y2="14" stroke="rgba(255,255,255,0.2)" stroke-width="1.5"/></svg>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>
+          </div>
+
+          <div class="summary-card-number">•••• •••• •••• {{ s.accountNumber.slice(-4) }}</div>
+
+          <div class="summary-card-footer">
+            <div>
+              <div class="summary-card-holder-label">ACCOUNT HOLDER</div>
+              <div class="summary-card-holder-name">{{ s.accountNumber }}</div>
+            </div>
+            <div class="summary-card-logo">VISA</div>
+          </div>
+        </div>
+
+        <!-- Account Balance Info Card -->
+        <div class="glass-card summary-info-card">
+          <div class="summary-info-header">
+            <h3>Account Details</h3>
+            <span class="glass-badge glass-badge--primary">Active</span>
+          </div>
+
+          <div class="summary-info-list">
+            <div class="summary-info-item">
+              <span class="summary-info-label">Account Number</span>
+              <span class="summary-info-value">{{ s.accountNumber }}</span>
+            </div>
+            <div class="summary-info-item">
+              <span class="summary-info-label">Available Balance</span>
+              <span class="summary-info-value summary-balance-highlight">₹ {{ s.balance | number: '1.2-2' }}</span>
+            </div>
+            <div class="summary-info-item">
+              <span class="summary-info-label">Currency</span>
+              <span class="summary-info-value">INR (₹)</span>
+            </div>
+            <div class="summary-info-item">
+              <span class="summary-info-label">Status</span>
+              <span class="summary-info-value summary-status-active">OPERATIONAL</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent Activity Table -->
+      <div class="glass-card summary-txn-card">
+        <div class="summary-txn-header">
+          <h3>Recent Transactions</h3>
+          <a routerLink="/dashboard/account-statement" class="glass-link">View Full Statement →</a>
+        </div>
+
+        @if (recentTransactions().length === 0) {
+          <p class="dash-empty-text">No transactions found.</p>
+        } @else {
+          <div class="summary-table-wrapper">
+            <table class="summary-txn-table">
+              <thead>
+                <tr>
+                  <th>Reference ID</th>
+                  <th>Mode</th>
+                  <th>To / From A/C</th>
+                  <th>Amount</th>
+                  <th>Date & Time</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (t of recentTransactions(); track t.referenceId) {
+                  <tr>
+                    <td><code>{{ t.referenceId }}</code></td>
+                    <td><span class="summary-mode-badge">{{ t.mode }}</span></td>
+                    <td>{{ t.direction === 'CREDIT' ? t.fromAccountNumber : t.toAccountNumber }}</td>
+                    <td [class.summary-amount-credit]="t.direction === 'CREDIT'" [class.summary-amount-debit]="t.direction === 'DEBIT'">
+                      {{ t.direction === 'CREDIT' ? '+' : '-' }}₹{{ t.amount | number: '1.2-2' }}
+                    </td>
+                    <td>{{ t.transactionDatetime | date: 'MMM d, y · h:mm a' }}</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        }
+      </div>
+
+    }
+  }
+</div>

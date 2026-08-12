@@ -1,0 +1,46 @@
+<div class="glass-page">
+  <div class="glass-card glass-form-wrapper glass-animate-in">
+
+    <!-- Brand mark -->
+    <div class="auth-brand-row">
+      <span class="auth-brand-label">ApexBank</span>
+    </div>
+
+    <h1 class="glass-title">Forgot User ID</h1>
+    <p class="glass-subtitle">Enter your account number to retrieve your User ID</p>
+
+    @if (errorMessage()) { <div class="glass-alert glass-alert--error">{{ errorMessage() }}</div> }
+
+    @if (retrievedUserId()) {
+    <div class="glass-alert glass-alert--success">
+      Your User ID is: <strong>{{ retrievedUserId() }}</strong><br />It has also been sent to your registered email.
+    </div>
+    <a routerLink="/login" class="glass-btn glass-btn--primary glass-btn--full">Proceed to Login</a>
+    } @else {
+    @if (devOtp()) { <div class="glass-alert glass-alert--info">Demo OTP: <strong>{{ devOtp() }}</strong></div> }
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="glass-input-group">
+        <label class="glass-label" for="fuid-acno">Account Number</label>
+        <input id="fuid-acno" class="glass-input" type="text" formControlName="accountNumber"
+          placeholder="Enter your account number" />
+      </div>
+      <div class="glass-input-group">
+        <label class="glass-label" for="fuid-otp">Enter OTP</label>
+        <div class="forgot-otp-row">
+          <input id="fuid-otp" class="glass-input" type="text" formControlName="otp" placeholder="6-digit OTP" />
+          <button type="button" class="glass-btn glass-btn--secondary" (click)="sendOtp()" [disabled]="otpSending()">
+            {{ otpSending() ? 'Sending...' : (otpSent() ? 'Resend OTP' : 'Send OTP') }}
+          </button>
+        </div>
+      </div>
+      <button type="submit" class="glass-btn glass-btn--primary glass-btn--full" [disabled]="loading()">
+        {{ loading() ? 'Verifying...' : 'Proceed' }}
+      </button>
+    </form>
+    }
+    <hr class="glass-divider" />
+    <div class="login-back-row">
+      <a routerLink="/login" class="glass-link">← Back to Login</a>
+    </div>
+  </div>
+</div>

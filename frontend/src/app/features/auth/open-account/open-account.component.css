@@ -1,0 +1,35 @@
+.open-account-section-title {
+  font-size: var(--font-size-base);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--color-accent-primary);
+  margin: var(--space-xl) 0 var(--space-md);
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--color-glass-border-subtle);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.open-account-section-title:first-of-type {
+  margin-top: var(--space-md);
+}
+
+.open-account-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0 var(--space-md);
+}
+
+.open-account-span-2 {
+  grid-column: span 2;
+}
+
+@media (max-width: 640px) {
+  .open-account-grid {
+    grid-template-columns: 1fr;
+  }
+  .open-account-span-2 {
+    grid-column: span 1;
+  }
+}

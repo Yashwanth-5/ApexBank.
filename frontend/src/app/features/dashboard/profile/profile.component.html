@@ -1,0 +1,88 @@
+<div class="glass-animate-in">
+  <h1 class="dash-page-title">User Profile</h1>
+  <p class="dash-page-subtitle">Manage your personal identification, contact information, and address records.</p>
+
+  @if (errorMessage()) { <div class="glass-alert glass-alert--error">{{ errorMessage() }}</div> }
+  @if (successMessage()) { <div class="glass-alert glass-alert--success">{{ successMessage() }}</div> }
+
+  @if (loading()) {
+    <div class="glass-card dash-loading-card">Loading profile...</div>
+  } @else {
+    @if (profile(); as p) {
+      <!-- Profile Header Card -->
+      <div class="glass-card profile-header-card">
+        <div class="profile-avatar">{{ p.firstName.charAt(0) }}{{ p.lastName.charAt(0) }}</div>
+        <div class="profile-header-info">
+          <h2 class="profile-name">{{ p.title }} {{ p.firstName }} {{ p.middleName }} {{ p.lastName }}</h2>
+          <div class="profile-meta-row">
+            <span class="profile-meta">A/C: {{ p.accountNumber }}</span>
+            @if (p.upiId) { <span class="profile-meta">UPI: {{ p.upiId }}</span> }
+          </div>
+        </div>
+        @if (!editing()) {
+          <button class="glass-btn glass-btn--secondary profile-edit-btn" (click)="enableEdit()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+            Edit Profile
+          </button>
+        }
+      </div>
+
+      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <!-- Contact & Security -->
+        <div class="glass-card profile-section-card">
+          <h3 class="profile-section-title">Contact & Identification</h3>
+          <div class="profile-grid">
+            <div class="glass-input-group"><label class="glass-label">Mobile Number</label><input class="glass-input" type="text" formControlName="mobileNumber" [readonly]="!editing()" /></div>
+            <div class="glass-input-group"><label class="glass-label">Email Address</label><input class="glass-input" type="email" formControlName="email" [readonly]="!editing()" /></div>
+          </div>
+          <h3 class="profile-section-title">Verified Identity Badges</h3>
+          <div class="profile-grid">
+            <div class="glass-input-group"><label class="glass-label">Aadhar Number</label><input class="glass-input" type="text" [value]="p.aadharNumber" readonly /></div>
+            <div class="glass-input-group"><label class="glass-label">Date of Birth</label><input class="glass-input" type="text" [value]="p.dateOfBirth" readonly /></div>
+          </div>
+        </div>
+
+        <!-- Residential Address -->
+        <div class="glass-card profile-section-card">
+          <h3 class="profile-section-title">Residential Address</h3>
+          <div class="profile-grid">
+            <div class="glass-input-group profile-span-2"><label class="glass-label">Address Line 1</label><input class="glass-input" type="text" formControlName="residentialAddressLine1" [readonly]="!editing()" /></div>
+            <div class="glass-input-group profile-span-2"><label class="glass-label">Address Line 2</label><input class="glass-input" type="text" formControlName="residentialAddressLine2" [readonly]="!editing()" /></div>
+            <div class="glass-input-group"><label class="glass-label">Landmark</label><input class="glass-input" type="text" formControlName="residentialLandmark" [readonly]="!editing()" /></div>
+            <div class="glass-input-group"><label class="glass-label">State</label><input class="glass-input" type="text" formControlName="residentialState" [readonly]="!editing()" /></div>
+            <div class="glass-input-group"><label class="glass-label">City</label><input class="glass-input" type="text" formControlName="residentialCity" [readonly]="!editing()" /></div>
+            <div class="glass-input-group"><label class="glass-label">Pincode</label><input class="glass-input" type="text" formControlName="residentialPincode" [readonly]="!editing()" /></div>
+          </div>
+        </div>
+
+        <!-- Permanent Address -->
+        <div class="glass-card profile-section-card">
+          <h3 class="profile-section-title">Permanent Address</h3>
+          <div class="profile-grid">
+            <div class="glass-input-group profile-span-2"><label class="glass-label">Address Line 1</label><input class="glass-input" type="text" formControlName="permanentAddressLine1" [readonly]="!editing()" /></div>
+            <div class="glass-input-group profile-span-2"><label class="glass-label">Address Line 2</label><input class="glass-input" type="text" formControlName="permanentAddressLine2" [readonly]="!editing()" /></div>
+            <div class="glass-input-group"><label class="glass-label">Landmark</label><input class="glass-input" type="text" formControlName="permanentLandmark" [readonly]="!editing()" /></div>
+            <div class="glass-input-group"><label class="glass-label">State</label><input class="glass-input" type="text" formControlName="permanentState" [readonly]="!editing()" /></div>
+            <div class="glass-input-group"><label class="glass-label">City</label><input class="glass-input" type="text" formControlName="permanentCity" [readonly]="!editing()" /></div>
+            <div class="glass-input-group"><label class="glass-label">Pincode</label><input class="glass-input" type="text" formControlName="permanentPincode" [readonly]="!editing()" /></div>
+          </div>
+        </div>
+
+        <!-- Occupation -->
+        <div class="glass-card profile-section-card">
+          <h3 class="profile-section-title">Employment & Occupation</h3>
+          <div class="profile-grid">
+            <div class="glass-input-group"><label class="glass-label">Occupation Type</label><input class="glass-input" type="text" formControlName="occupationType" [readonly]="!editing()" /></div>
+          </div>
+        </div>
+
+        @if (editing()) {
+          <div class="profile-actions">
+            <button type="submit" class="glass-btn glass-btn--primary" [disabled]="saving()">{{ saving() ? 'Saving Changes...' : 'Save Profile' }}</button>
+            <button type="button" class="glass-btn glass-btn--secondary" (click)="cancelEdit()">Cancel</button>
+          </div>
+        }
+      </form>
+    }
+  }
+</div>

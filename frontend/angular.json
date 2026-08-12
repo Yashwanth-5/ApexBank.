@@ -1,0 +1,60 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "projects",
+  "projects": {
+    "apexbank-frontend": {
+      "projectType": "application",
+      "root": "",
+      "sourceRoot": "src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:application",
+          "options": {
+            "outputPath": "dist/apexbank-frontend",
+            "index": "src/index.html",
+            "browser": "src/main.ts",
+            "polyfills": ["zone.js"],
+            "tsConfig": "tsconfig.app.json",
+            "assets": ["src/favicon.ico", "src/assets"],
+            "styles": [
+              "src/styles/_variables.css",
+              "src/styles/_glassmorphism.css",
+              "src/styles/styles.css"
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                { "type": "initial", "maximumWarning": "600kB", "maximumError": "1MB" }
+              ],
+              "outputHashing": "all",
+              "fileReplacements": [
+                { "replace": "src/environments/environment.ts", "with": "src/environments/environment.prod.ts" }
+              ]
+            },
+            "development": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "configurations": {
+            "production": { "buildTarget": "apexbank-frontend:build:production" },
+            "development": { "buildTarget": "apexbank-frontend:build:development" }
+          },
+          "defaultConfiguration": "development"
+        }
+      }
+    }
+  },
+  "cli": {
+    "analytics": "eb69b721-a084-4256-9c41-58c4e3783e7b"
+  }
+}

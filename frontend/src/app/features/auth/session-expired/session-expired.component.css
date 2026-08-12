@@ -1,0 +1,23 @@
+.session-expired-card {
+  text-align: center;
+}
+
+.session-expired-icon {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto var(--space-md);
+  border-radius: 50%;
+  background: rgba(255, 159, 10, 0.12);
+  color: var(--color-accent-warning);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  box-shadow: 0 8px 24px rgba(255, 159, 10, 0.2);
+}
+
+.session-expired-meta {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-md);
+}

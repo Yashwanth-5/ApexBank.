@@ -1,0 +1,151 @@
+.statement-filter-card {
+  padding: var(--space-xl);
+  margin-bottom: var(--space-xl);
+}
+
+.statement-filter-form {
+  display: flex;
+  gap: var(--space-lg);
+  align-items: flex-end;
+  flex-wrap: wrap;
+}
+
+.statement-filter-form .glass-input-group {
+  margin-bottom: 0;
+  flex: 1;
+  min-width: 200px;
+}
+
+.statement-filter-btn {
+  height: 48px;
+  padding: 0 32px;
+}
+
+.statement-summary-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-lg);
+  margin-bottom: var(--space-xl);
+}
+
+.statement-summary-chip {
+  padding: var(--space-xl);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  border-radius: var(--radius-lg);
+}
+
+.statement-chip-label {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.statement-chip-value {
+  font-size: var(--font-size-2xl);
+  font-weight: 800;
+}
+
+.summary-amount-credit {
+  font-size: var(--font-size-2xl);
+  font-weight: 800;
+  color: var(--color-accent-success);
+}
+
+.summary-amount-debit {
+  font-size: var(--font-size-2xl);
+  font-weight: 800;
+  color: var(--color-accent-danger);
+}
+
+.statement-table-card {
+  padding: var(--space-2xl);
+}
+
+.statement-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-md);
+  padding: var(--space-3xl) 0;
+  color: var(--color-text-muted);
+}
+
+@media (max-width: 768px) {
+  .statement-summary-row {
+    grid-template-columns: 1fr;
+  }
+  .statement-filter-form {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+/* ── Print Statement button row ── */
+.statement-action-btns {
+  display: flex;
+  gap: var(--space-sm);
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.statement-print-btn {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  height: 48px;
+  padding: 0 28px;
+}
+
+/* ═══════════════════════════════════════════════════
+   Print Styles  –  only #printable-statement shows
+═══════════════════════════════════════════════════ */
+@media print {
+  /* Hide everything on the page by default */
+  body * {
+    visibility: hidden !important;
+  }
+
+  /* Then reveal only the printable statement region */
+  #printable-statement,
+  #printable-statement * {
+    visibility: visible !important;
+  }
+
+  /* Position it at the top-left of the page */
+  #printable-statement {
+    position: fixed;
+    inset: 0;
+    padding: 24px;
+    background: #ffffff !important;
+    color: #111111 !important;
+  }
+
+  /* Flatten glassmorphism for print clarity */
+  #printable-statement .glass-panel,
+  #printable-statement .glass-card {
+    background: #f4f4f4 !important;
+    box-shadow: none !important;
+    border: 1px solid #cccccc !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  /* Ensure table text is black and legible */
+  #printable-statement table,
+  #printable-statement th,
+  #printable-statement td {
+    color: #111111 !important;
+    border-color: #cccccc !important;
+  }
+
+  /* Keep credit/debit colours readable in print */
+  #printable-statement .summary-amount-credit { color: #1a7a3e !important; }
+  #printable-statement .summary-amount-debit  { color: #b01c1c !important; }
+
+  /* Suppress elements that should never print */
+  .no-print { display: none !important; }
+}

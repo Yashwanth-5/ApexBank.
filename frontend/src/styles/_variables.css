@@ -1,0 +1,141 @@
+:root {
+  /* ── Surface & Background ── */
+  --color-bg-primary:    #f2f4f8;
+  --color-bg-secondary:  #e8edf5;
+  --color-bg-mesh-1:     rgba(10, 132, 255, 0.10);
+  --color-bg-mesh-2:     rgba(94, 92, 230, 0.10);
+  --color-bg-mesh-3:     rgba(48, 209, 88, 0.06);
+
+  /* ── Typography ── */
+  --color-text-primary:   #0d1117;
+  --color-text-secondary: #515a6b;
+  --color-text-muted:     #8a9099;
+  --color-text-inverse:   #ffffff;
+  --color-text-on-accent: #ffffff;
+
+  /* ── Accent Colors ── */
+  --color-accent-primary:       #0a84ff;
+  --color-accent-primary-hover: #0071e3;
+  --color-accent-secondary:     #5e5ce6;
+  --color-accent-success:       #30d158;
+  --color-accent-success-text:  #1a7a35;
+  --color-accent-danger:        #ff453a;
+  --color-accent-danger-text:   #c8000a;
+  --color-accent-warning:       #ff9f0a;
+  --color-accent-warning-text:  #b06800;
+
+  /* ── Glass Surface Tokens ── */
+  --color-glass-bg:            rgba(255, 255, 255, 0.60);
+  --color-glass-bg-hover:      rgba(255, 255, 255, 0.78);
+  --color-glass-bg-strong:     rgba(255, 255, 255, 0.88);
+  --color-glass-bg-input:      rgba(255, 255, 255, 0.55);
+  --color-glass-bg-input-focus:rgba(255, 255, 255, 0.95);
+  --color-glass-border:        rgba(210, 218, 232, 0.90);
+  --color-glass-border-subtle: rgba(210, 218, 232, 0.55);
+  --color-glass-border-focus:  var(--color-accent-primary);
+  --color-glass-shadow:        0 4px 24px -4px rgba(16, 24, 40, 0.08), 0 1px 4px rgba(16, 24, 40, 0.04);
+  --color-glass-shadow-hover:  0 16px 48px -10px rgba(10, 132, 255, 0.20), 0 4px 16px rgba(16, 24, 40, 0.06);
+  --color-glass-shadow-card:   0 8px 32px -8px rgba(16, 24, 40, 0.10), 0 2px 8px rgba(16, 24, 40, 0.04);
+
+  /* ── Table ── */
+  --color-table-row-hover:     rgba(10, 132, 255, 0.04);
+  --color-table-border:        rgba(210, 218, 232, 0.80);
+
+  /* ── Sidebar ── */
+  --color-sidebar-bg:          rgba(255, 255, 255, 0.72);
+  --color-sidebar-user-bg:     rgba(240, 244, 252, 0.70);
+  --color-sidebar-link-hover:  rgba(10, 132, 255, 0.08);
+  --color-sidebar-link-active-from: #0a84ff;
+  --color-sidebar-link-active-to:   #5e5ce6;
+
+  /* ── Radii ── */
+  --radius-xs:   8px;
+  --radius-sm:   12px;
+  --radius-md:   16px;
+  --radius-lg:   24px;
+  --radius-xl:   32px;
+  --radius-2xl:  40px;
+  --radius-full: 9999px;
+
+  /* ── Blur ── */
+  --blur-sm:  12px;
+  --blur-md:  24px;
+  --blur-lg:  40px;
+  --blur-xl:  60px;
+
+  /* ── Spacing (8-pt grid) ── */
+  --space-2xs:  4px;
+  --space-xs:   8px;
+  --space-sm:   12px;
+  --space-md:   16px;
+  --space-lg:   24px;
+  --space-xl:   32px;
+  --space-2xl:  48px;
+  --space-3xl:  64px;
+
+  /* ── Typography ── */
+  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', sans-serif;
+  --font-size-2xs:  0.688rem;
+  --font-size-xs:   0.75rem;
+  --font-size-sm:   0.875rem;
+  --font-size-base: 1rem;
+  --font-size-md:   1rem;
+  --font-size-lg:   1.125rem;
+  --font-size-xl:   1.375rem;
+  --font-size-2xl:  1.875rem;
+  --font-size-3xl:  2.5rem;
+  --font-size-4xl:  3.25rem;
+
+  /* ── Shadows ── */
+  --shadow-xs: 0 1px 4px rgba(16, 24, 40, 0.04);
+  --shadow-sm: 0 4px 16px rgba(16, 24, 40, 0.06);
+  --shadow-md: 0 8px 32px rgba(16, 24, 40, 0.08);
+  --shadow-lg: 0 16px 56px rgba(16, 24, 40, 0.12);
+
+  /* ── Transitions ── */
+  --transition-instant: 0.08s ease;
+  --transition-fast:    0.18s cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-base:    0.28s cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-slow:    0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-spring:  0.50s cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* ── Focus Ring ── */
+  --focus-ring: 0 0 0 3px rgba(10, 132, 255, 0.30), 0 0 0 1px var(--color-accent-primary);
+}
+
+/* ═══════════════════════════════
+   DARK THEME OVERRIDES
+═══════════════════════════════ */
+.dark-theme {
+  --color-bg-primary:    #0b0d14;
+  --color-bg-secondary:  #111420;
+
+  --color-text-primary:   #eef0f6;
+  --color-text-secondary: #8d96aa;
+  --color-text-muted:     #555e70;
+
+  --color-accent-success-text:  #30d158;
+  --color-accent-danger-text:   #ff6860;
+  --color-accent-warning-text:  #ffbe3d;
+
+  --color-glass-bg:            rgba(18, 22, 36, 0.72);
+  --color-glass-bg-hover:      rgba(26, 32, 48, 0.82);
+  --color-glass-bg-strong:     rgba(26, 32, 48, 0.92);
+  --color-glass-bg-input:      rgba(255, 255, 255, 0.06);
+  --color-glass-bg-input-focus:rgba(255, 255, 255, 0.10);
+  --color-glass-border:        rgba(255, 255, 255, 0.10);
+  --color-glass-border-subtle: rgba(255, 255, 255, 0.06);
+  --color-glass-shadow:        0 4px 24px -4px rgba(0, 0, 0, 0.50), 0 1px 4px rgba(0, 0, 0, 0.30);
+  --color-glass-shadow-hover:  0 16px 48px -10px rgba(10, 132, 255, 0.30), 0 4px 16px rgba(0, 0, 0, 0.35);
+  --color-glass-shadow-card:   0 8px 32px -8px rgba(0, 0, 0, 0.50), 0 2px 8px rgba(0, 0, 0, 0.30);
+
+  --color-table-row-hover:     rgba(255, 255, 255, 0.04);
+  --color-table-border:        rgba(255, 255, 255, 0.08);
+
+  --color-sidebar-bg:          rgba(14, 17, 28, 0.85);
+  --color-sidebar-user-bg:     rgba(255, 255, 255, 0.05);
+  --color-sidebar-link-hover:  rgba(255, 255, 255, 0.07);
+  --color-bg-mesh-1:           rgba(10, 132, 255, 0.14);
+  --color-bg-mesh-2:           rgba(94, 92, 230, 0.14);
+  --color-bg-mesh-3:           rgba(48, 209, 88, 0.08);
+}

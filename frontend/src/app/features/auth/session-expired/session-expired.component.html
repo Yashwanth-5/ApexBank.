@@ -1,0 +1,19 @@
+<div class="glass-page">
+  <div class="glass-card glass-form-wrapper glass-animate-in session-expired-card">
+
+    <div class="auth-brand-row">
+      <span class="auth-brand-label">ApexBank</span>
+    </div>
+
+    <div class="session-expired-icon">⏳</div>
+    <h1 class="glass-title">You Have Been Logged Out</h1>
+    <p class="glass-subtitle">Your banking session has expired for security.</p>
+    @if (lastLoginTime) { <p class="session-expired-meta">Last active: {{ lastLoginTime }}</p> }
+    <div class="glass-alert glass-alert--info">For your protection, back-navigation is disabled after logging out.</div>
+    <a routerLink="/login" class="glass-btn glass-btn--primary glass-btn--full">Proceed to Login</a>
+    <hr class="glass-divider" />
+    <div class="login-back-row">
+      <a routerLink="/home" class="glass-link">← Back to Home</a>
+    </div>
+  </div>
+</div>

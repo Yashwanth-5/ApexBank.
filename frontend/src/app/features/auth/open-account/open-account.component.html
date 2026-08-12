@@ -1,0 +1,191 @@
+<div class="glass-page">
+  <div class="glass-card glass-form-wrapper glass-form-wrapper--wide glass-animate-in">
+
+    <!-- Brand mark -->
+    <div class="auth-brand-row">
+      <span class="auth-brand-label">ApexBank</span>
+    </div>
+
+    <h1 class="glass-title">Open a Savings Account</h1>
+    <p class="glass-subtitle">Complete the form below to apply for a new ApexBank account</p>
+
+    @if (errorMessage()) { <div class="glass-alert glass-alert--error">{{ errorMessage() }}</div> }
+
+    @if (successMessage()) {
+    <div class="glass-alert glass-alert--success">
+      {{ successMessage() }}
+      @if (submittedRequestId()) { <br />Reference ID: <strong>{{ submittedRequestId() }}</strong> }
+    </div>
+    <a routerLink="/home" class="glass-btn glass-btn--primary glass-btn--full">Return to Home</a>
+    } @else {
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <h3 class="open-account-section-title">Personal Details</h3>
+      <div class="open-account-grid">
+        <div class="glass-input-group">
+          <label class="glass-label" for="oa-title">Title</label>
+          <select id="oa-title" class="glass-select" formControlName="title">
+            <option value="Mr">Mr</option>
+            <option value="Ms">Ms</option>
+            <option value="Mrs">Mrs</option>
+            <option value="Dr">Dr</option>
+          </select>
+        </div>
+        <div class="glass-input-group">
+          <label class="glass-label" for="oa-fname">First Name</label>
+          <input id="oa-fname" class="glass-input" type="text" formControlName="firstName" placeholder="First name" />
+        </div>
+        <div class="glass-input-group">
+          <label class="glass-label" for="oa-mname">Middle Name</label>
+          <input id="oa-mname" class="glass-input" type="text" formControlName="middleName"
+            placeholder="Middle name (optional)" />
+        </div>
+        <div class="glass-input-group">
+          <label class="glass-label" for="oa-lname">Last Name</label>
+          <input id="oa-lname" class="glass-input" type="text" formControlName="lastName" placeholder="Last name" />
+        </div>
+        <div class="glass-input-group">
+          <label class="glass-label" for="oa-faname">Father's Name</label>
+          <input id="oa-faname" class="glass-input" type="text" formControlName="fatherName"
+            placeholder="Father's full name" />
+        </div>
+        <div class="glass-input-group">
+          <label class="glass-label" for="oa-mobile">Mobile Number</label>
+          <input id="oa-mobile" class="glass-input" type="text" formControlName="mobileNumber"
+            placeholder="10-digit mobile number" />
+        </div>
+        <div class="glass-input-group">
+          <label class="glass-label" for="oa-email">Email ID</label>
+          <input id="oa-email" class="glass-input" type="email" formControlName="email"
+            placeholder="email@example.com" />
+        </div>
+        <div class="glass-input-group">
+          <label class="glass-label" for="oa-aadhar">Aadhar Card Number</label>
+          <input id="oa-aadhar" class="glass-input" type="text" formControlName="aadharNumber"
+            placeholder="12-digit Aadhar number" />
+        </div>
+        <div class="glass-input-group">
+          <label class="glass-label" for="oa-dob">Date of Birth</label>
+          <input id="oa-dob" class="glass-input" type="date" formControlName="dateOfBirth" />
+        </div>
+      </div>
+
+      <h3 class="open-account-section-title">Residential Address</h3>
+      <div class="open-account-grid">
+        <div class="glass-input-group open-account-span-2">
+          <label class="glass-label" for="oa-raddr1">Address Line 1</label>
+          <input id="oa-raddr1" class="glass-input" type="text" formControlName="residentialAddressLine1"
+            placeholder="House/Flat No., Building Name" />
+        </div>
+        <div class="glass-input-group open-account-span-2">
+          <label class="glass-label" for="oa-raddr2">Address Line 2</label>
+          <input id="oa-raddr2" class="glass-input" type="text" formControlName="residentialAddressLine2"
+            placeholder="Street, Area, Locality" />
+        </div>
+        <div class="glass-input-group">
+          <label class="glass-label" for="oa-rlandmark">Landmark</label>
+          <input id="oa-rlandmark" class="glass-input" type="text" formControlName="residentialLandmark"
+            placeholder="Nearby landmark" />
+        </div>
+        <div class="glass-input-group">
+          <label class="glass-label" for="oa-rstate">State</label>
+          <input id="oa-rstate" class="glass-input" type="text" formControlName="residentialState"
+            placeholder="State" />
+        </div>
+        <div class="glass-input-group">
+          <label class="glass-label" for="oa-rcity">City</label>
+          <input id="oa-rcity" class="glass-input" type="text" formControlName="residentialCity" placeholder="City" />
+        </div>
+        <div class="glass-input-group">
+          <label class="glass-label" for="oa-rpincode">Pincode</label>
+          <input id="oa-rpincode" class="glass-input" type="text" formControlName="residentialPincode"
+            placeholder="6-digit pincode" />
+        </div>
+      </div>
+
+      <h3 class="open-account-section-title">Permanent Address</h3>
+      <div class="glass-checkbox-row">
+        <input type="checkbox" id="sameAddr" formControlName="permanentSameAsResidential" />
+        <label for="sameAddr">Permanent Address same as Residential Address</label>
+      </div>
+
+      @if (!form.get('permanentSameAsResidential')?.value) {
+      <div class="open-account-grid">
+        <div class="glass-input-group open-account-span-2">
+          <label class="glass-label" for="oa-paddr1">Address Line 1</label>
+          <input id="oa-paddr1" class="glass-input" type="text" formControlName="permanentAddressLine1"
+            placeholder="House/Flat No., Building Name" />
+        </div>
+        <div class="glass-input-group open-account-span-2">
+          <label class="glass-label" for="oa-paddr2">Address Line 2</label>
+          <input id="oa-paddr2" class="glass-input" type="text" formControlName="permanentAddressLine2"
+            placeholder="Street, Area, Locality" />
+        </div>
+        <div class="glass-input-group">
+          <label class="glass-label" for="oa-plandmark">Landmark</label>
+          <input id="oa-plandmark" class="glass-input" type="text" formControlName="permanentLandmark"
+            placeholder="Nearby landmark" />
+        </div>
+        <div class="glass-input-group">
+          <label class="glass-label" for="oa-pstate">State</label>
+          <input id="oa-pstate" class="glass-input" type="text" formControlName="permanentState" placeholder="State" />
+        </div>
+        <div class="glass-input-group">
+          <label class="glass-label" for="oa-pcity">City</label>
+          <input id="oa-pcity" class="glass-input" type="text" formControlName="permanentCity" placeholder="City" />
+        </div>
+        <div class="glass-input-group">
+          <label class="glass-label" for="oa-ppincode">Pincode</label>
+          <input id="oa-ppincode" class="glass-input" type="text" formControlName="permanentPincode"
+            placeholder="6-digit pincode" />
+        </div>
+      </div>
+      }
+
+      <h3 class="open-account-section-title">Occupation Details</h3>
+      <div class="open-account-grid">
+        <div class="glass-input-group">
+          <label class="glass-label" for="oa-occ">Occupation Type</label>
+          <select id="oa-occ" class="glass-select" formControlName="occupationType">
+            <option value="" disabled>Select occupation</option>
+            @for (o of occupationTypes; track o) { <option [value]="o">{{ o }}</option> }
+          </select>
+        </div>
+        <div class="glass-input-group">
+          <label class="glass-label" for="oa-soi">Source of Income</label>
+          <input id="oa-soi" class="glass-input" type="text" formControlName="sourceOfIncome"
+            placeholder="e.g. Salary, Business" />
+        </div>
+        <div class="glass-input-group">
+          <label class="glass-label" for="oa-gai">Gross Annual Income</label>
+          <select id="oa-gai" class="glass-select" formControlName="grossAnnualIncome">
+            <option value="" disabled>Select income range</option>
+            @for (i of incomeSlabs; track i) { <option [value]="i">{{ i }}</option> }
+          </select>
+        </div>
+      </div>
+
+      <h3 class="open-account-section-title">Debit Card & Net Banking</h3>
+      <div class="glass-checkbox-row">
+        <input type="checkbox" id="debitCard" formControlName="wantsDebitCard" />
+        <label for="debitCard">I want a Debit/ATM Card</label>
+      </div>
+      <div class="glass-checkbox-row">
+        <input type="checkbox" id="netBanking" formControlName="optForNetBanking" />
+        <label for="netBanking">Opt for Net Banking</label>
+      </div>
+      <div class="glass-checkbox-row">
+        <input type="checkbox" id="agreeTerms" formControlName="agreeTerms" />
+        <label for="agreeTerms">I agree to the Terms & Conditions</label>
+      </div>
+
+      <button type="submit" class="glass-btn glass-btn--primary glass-btn--full" [disabled]="loading()">
+        {{ loading() ? 'Submitting Application...' : 'Submit Application' }}
+      </button>
+    </form>
+    }
+    <hr class="glass-divider" />
+    <div class="login-back-row">
+      <a routerLink="/home" class="glass-link">← Back to Home</a>
+    </div>
+  </div>
+</div>

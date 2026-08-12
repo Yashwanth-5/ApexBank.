@@ -1,0 +1,143 @@
+<div class="overview glass-animate-in">
+
+  <!-- Page Header -->
+  <div class="overview-header">
+    <div>
+      <h1 class="overview-greeting">Good day, {{ dashboard()?.fullName?.split(' ')?.[0] }} 👋</h1>
+      <p class="overview-sub">Here's your financial snapshot for today.</p>
+    </div>
+  </div>
+
+  @if (errorMessage()) { <div class="glass-alert glass-alert--error">{{ errorMessage() }}</div> }
+
+  @if (loading()) {
+    <div class="glass-card overview-loading">
+      <div class="overview-spinner"></div>
+      <span>Loading your account…</span>
+    </div>
+  } @else {
+    @if (dashboard(); as d) {
+
+      <!-- Apple Card Style Balance -->
+      <div class="overview-balance-card glass-animate-in" style="animation-delay:0.05s">
+        <div class="overview-balance-card-shine"></div>
+        <div class="overview-balance-inner">
+          <div class="overview-balance-top">
+            <div>
+              <div class="overview-balance-label">Total Balance</div>
+              <div class="overview-balance-amount">
+                {{ balanceVisible() ? ('₹ ' + (d.balance | number: '1.2-2')) : '₹ ••••••••' }}
+              </div>
+            </div>
+            <button class="overview-eye-btn" (click)="toggleBalance()" [attr.aria-label]="balanceVisible() ? 'Hide balance' : 'Show balance'">
+              @if (balanceVisible()) {
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              } @else {
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+              }
+            </button>
+          </div>
+
+          <div class="overview-balance-chip">
+            <svg width="28" height="22" viewBox="0 0 38 28" fill="none"><rect x="1" y="1" width="36" height="26" rx="4" fill="rgba(255,255,255,0.25)" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/><rect x="6" y="8" width="10" height="13" rx="2" fill="rgba(255,255,255,0.3)"/><line x1="1" y1="14" x2="37" y2="14" stroke="rgba(255,255,255,0.2)" stroke-width="1.5"/></svg>
+          </div>
+
+          <div class="overview-balance-footer">
+            <div class="overview-balance-acno">A/C •••• {{ d.accountNumber.slice(-4) }}</div>
+            <div class="overview-balance-type glass-badge glass-badge--primary">{{ d.accountType }}</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- UPI Card -->
+      <div class="glass-card overview-upi-card glass-animate-in" style="animation-delay:0.1s">
+        <div class="overview-upi-left">
+          <div class="overview-upi-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="5" width="20" height="14" rx="3"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+          </div>
+          <div>
+            <div class="overview-upi-label">Your UPI ID</div>
+            <div class="overview-upi-value">{{ d.upiId || 'Not configured' }}</div>
+          </div>
+        </div>
+        <a routerLink="/fund-transfer" class="glass-btn glass-btn--primary">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polyline points="17 1 21 5 17 9"/><line x1="3" y1="5" x2="21" y2="5"/><polyline points="7 23 3 19 7 15"/><line x1="21" y1="19" x2="3" y2="19"/></svg>
+          Send Money
+        </a>
+      </div>
+
+      <!-- Quick Actions -->
+      <div class="overview-quick-row glass-animate-in" style="animation-delay:0.15s">
+        <a routerLink="/fund-transfer" class="glass-card glass-card--interactive overview-quick-card">
+          <div class="overview-quick-icon overview-quick-icon--blue">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="17 1 21 5 17 9"/><line x1="3" y1="5" x2="21" y2="5"/><polyline points="7 23 3 19 7 15"/><line x1="21" y1="19" x2="3" y2="19"/></svg>
+          </div>
+          <span class="overview-quick-label">Transfer</span>
+        </a>
+        <a routerLink="/payees" class="glass-card glass-card--interactive overview-quick-card">
+          <div class="overview-quick-icon overview-quick-icon--green">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
+          </div>
+          <span class="overview-quick-label">Add Payee</span>
+        </a>
+        <a routerLink="/dashboard/account-statement" class="glass-card glass-card--interactive overview-quick-card">
+          <div class="overview-quick-icon overview-quick-icon--purple">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          </div>
+          <span class="overview-quick-label">Statement</span>
+        </a>
+        <a routerLink="/dashboard/account-summary" class="glass-card glass-card--interactive overview-quick-card">
+          <div class="overview-quick-icon overview-quick-icon--orange">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="5" width="20" height="14" rx="3"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+          </div>
+          <span class="overview-quick-label">Summary</span>
+        </a>
+        <a routerLink="/dashboard/profile" class="glass-card glass-card--interactive overview-quick-card">
+          <div class="overview-quick-icon overview-quick-icon--teal">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          </div>
+          <span class="overview-quick-label">Profile</span>
+        </a>
+      </div>
+
+      <!-- Recent Transactions -->
+      <div class="glass-card overview-txn-card glass-animate-in" style="animation-delay:0.2s">
+        <div class="overview-txn-header">
+          <h2 class="overview-txn-title">Recent Transactions</h2>
+          <a routerLink="/dashboard/account-statement" class="glass-link">View all →</a>
+        </div>
+
+        @if (recentTransactions().length === 0) {
+          <div class="overview-txn-empty">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+            <p>No transactions yet.</p>
+          </div>
+        } @else {
+          <div class="overview-txn-list">
+            @for (t of recentTransactions(); track t.referenceId) {
+              <div class="overview-txn-row">
+                <div class="overview-txn-icon" [class.overview-txn-icon--credit]="t.direction === 'CREDIT'">
+                  @if (t.direction === 'CREDIT') {
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+                  } @else {
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
+                  }
+                </div>
+                <div class="overview-txn-info">
+                  <div class="overview-txn-primary">
+                    {{ t.direction === 'CREDIT' ? ('From ' + t.fromAccountNumber) : ('To ' + t.toAccountNumber) }}
+                  </div>
+                  <div class="overview-txn-secondary">{{ t.mode }} · {{ t.transactionDatetime | date: 'MMM d, y · h:mm a' }}</div>
+                </div>
+                <div class="overview-txn-amount" [class.overview-txn-amount--credit]="t.direction === 'CREDIT'">
+                  {{ t.direction === 'CREDIT' ? '+' : '-' }}₹{{ t.amount | number: '1.2-2' }}
+                </div>
+              </div>
+            }
+          </div>
+        }
+      </div>
+
+    }
+  }
+</div>

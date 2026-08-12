@@ -1,0 +1,330 @@
+<div class="glass-animate-in">
+
+  @if (errorMessage()) { <div class="glass-alert glass-alert--error">{{ errorMessage() }}</div> }
+  @if (successMessage()) { <div class="glass-alert glass-alert--success">{{ successMessage() }}</div> }
+
+  <!-- ── OVERVIEW / DASHBOARD ─────────────────────────────────────────────── -->
+  @if (currentView() === 'dashboard') {
+    <div class="admin-header">
+      <h1 class="dash-page-title">Admin Dashboard</h1>
+      <p class="dash-page-subtitle">System overview and key metrics</p>
+    </div>
+
+    @if (loading()) {
+      <div class="glass-card dash-loading-card">Loading system statistics...</div>
+    } @else {
+      <!-- Stats Grid -->
+      <div class="admin-stats-grid">
+        <div class="glass-card admin-stat-card">
+          <div class="admin-stat-icon admin-stat-icon--blue">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+              <circle cx="9" cy="7" r="4"/>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+            </svg>
+          </div>
+          <div class="admin-stat-value">{{ stats()?.totalUsers || 0 }}</div>
+          <div class="admin-stat-label">Total Users</div>
+        </div>
+
+        <div class="glass-card admin-stat-card">
+          <div class="admin-stat-icon admin-stat-icon--green">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="2" y="5" width="20" height="14" rx="3"/>
+              <line x1="2" y1="10" x2="22" y2="10"/>
+            </svg>
+          </div>
+          <div class="admin-stat-value">₹{{ formatAmount(stats()?.totalBalance || 0) }}</div>
+          <div class="admin-stat-label">Total Balance</div>
+        </div>
+
+        <div class="glass-card admin-stat-card">
+          <div class="admin-stat-icon admin-stat-icon--orange">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"/>
+              <polyline points="12 6 12 12 16 14"/>
+            </svg>
+          </div>
+          <div class="admin-stat-value">{{ stats()?.pendingRequests || 0 }}</div>
+          <div class="admin-stat-label">Pending Requests</div>
+        </div>
+
+        <div class="glass-card admin-stat-card">
+          <div class="admin-stat-icon admin-stat-icon--purple">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="17 1 21 5 17 9"/>
+              <line x1="3" y1="5" x2="21" y2="5"/>
+              <polyline points="7 23 3 19 7 15"/>
+              <line x1="21" y1="19" x2="3" y2="19"/>
+            </svg>
+          </div>
+          <div class="admin-stat-value">{{ stats()?.totalTransactions || 0 }}</div>
+          <div class="admin-stat-label">Total Transactions</div>
+        </div>
+      </div>
+    }
+  }
+
+  <!-- ── ACCOUNT REQUESTS ─────────────────────────────────────────────────── -->
+  @if (currentView() === 'requests') {
+    <div class="admin-header">
+      <h1 class="dash-page-title">Account Requests</h1>
+      <p class="dash-page-subtitle">Review and process account opening applications</p>
+    </div>
+
+    <div class="ft-mode-toggle glass-panel admin-filter-toggle">
+      <button class="ft-mode-btn" [class.ft-mode-btn--active]="filter() === 'PENDING'" (click)="setFilter('PENDING')">
+        ⏳ Pending Approvals
+      </button>
+      <button class="ft-mode-btn" [class.ft-mode-btn--active]="filter() === 'ALL'" (click)="setFilter('ALL')">
+        📋 All Requests
+      </button>
+    </div>
+
+    @if (loading()) {
+      <div class="glass-card dash-loading-card">Loading account requests...</div>
+    } @else if (requests().length === 0) {
+      <div class="glass-card dash-loading-card">No account applications found.</div>
+    } @else {
+      <div class="admin-grid">
+        @for (r of requests(); track r.id) {
+          <div class="glass-card glass-card--interactive admin-request-card">
+            <div class="admin-request-header">
+              <div class="admin-avatar">{{ r.firstName.charAt(0) }}{{ r.lastName.charAt(0) }}</div>
+              <div class="admin-req-info">
+                <div class="admin-req-name">{{ r.title }} {{ r.firstName }} {{ r.lastName }}</div>
+                <div class="admin-req-mobile">{{ r.mobileNumber }}</div>
+              </div>
+              <span class="admin-status-badge" [class]="'admin-status-badge--' + r.status.toLowerCase()">{{ r.status }}</span>
+            </div>
+            <div class="admin-req-meta">
+              <span>{{ r.occupationType }}</span>
+              <span>·</span>
+              <span>Applied {{ r.createdAt | date: 'MMM d, y' }}</span>
+            </div>
+            <button class="glass-btn glass-btn--secondary glass-btn--full" (click)="viewRequestDetails(r)">
+              Review Application →
+            </button>
+          </div>
+        }
+      </div>
+    }
+  }
+
+  <!-- ── ALL USERS ────────────────────────────────────────────────────────── -->
+  @if (currentView() === 'users') {
+    <div class="admin-header">
+      <h1 class="dash-page-title">All Users</h1>
+      <p class="dash-page-subtitle">View and manage user accounts</p>
+    </div>
+
+    @if (loading()) {
+      <div class="glass-card dash-loading-card">Loading user accounts...</div>
+    } @else if (accounts().length === 0) {
+      <div class="glass-card dash-loading-card">No user accounts found.</div>
+    } @else {
+      <div class="admin-grid">
+        @for (acc of accounts(); track acc.id) {
+          <div class="glass-card glass-card--interactive admin-account-card">
+            <div class="admin-request-header">
+              <div class="admin-avatar">{{ acc.firstName.charAt(0) }}{{ acc.lastName.charAt(0) }}</div>
+              <div class="admin-req-info">
+                <div class="admin-req-name">{{ acc.title }} {{ acc.firstName }} {{ acc.lastName }}</div>
+                <div class="admin-req-mobile">{{ acc.accountNumber }}</div>
+              </div>
+              <span class="admin-status-badge admin-status-badge--approved">{{ acc.status }}</span>
+            </div>
+            <div class="admin-req-meta">
+              <span>Balance: ₹{{ formatAmount(acc.balance) }}</span>
+              <span>·</span>
+              <span>{{ acc.accountType }}</span>
+            </div>
+            <button class="glass-btn glass-btn--secondary glass-btn--full" (click)="viewUserDetails(acc)">
+              View Details →
+            </button>
+          </div>
+        }
+      </div>
+    }
+  }
+
+  <!-- ── TRANSACTIONS ─────────────────────────────────────────────────────── -->
+  @if (currentView() === 'transactions') {
+    <div class="admin-header">
+      <h1 class="dash-page-title">All Transactions</h1>
+      <p class="dash-page-subtitle">System-wide transaction history</p>
+    </div>
+
+    @if (loading()) {
+      <div class="glass-card dash-loading-card">Loading transactions...</div>
+    } @else if (transactions().length === 0) {
+      <div class="glass-card dash-loading-card">No transactions found.</div>
+    } @else {
+      <div class="glass-card admin-table-card">
+        <div class="summary-table-wrapper">
+          <table class="summary-txn-table">
+            <thead>
+              <tr>
+                <th>Reference ID</th>
+                <th>Mode</th>
+                <th>From Account</th>
+                <th>To Account</th>
+                <th>Amount</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (txn of transactions(); track txn.referenceId) {
+                <tr>
+                  <td><code>{{ txn.referenceId }}</code></td>
+                  <td><span class="summary-mode-badge">{{ txn.mode }}</span></td>
+                  <td>{{ txn.fromAccountNumber }}</td>
+                  <td>{{ txn.toAccountNumber }}</td>
+                  <td>₹{{ formatAmount(txn.amount) }}</td>
+                  <td>{{ txn.transactionDatetime | date: 'MMM d, y HH:mm' }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+    }
+  }
+
+  <!-- ── CREDIT ACCOUNT ───────────────────────────────────────────────────── -->
+  @if (currentView() === 'credit') {
+    <div class="admin-header">
+      <h1 class="dash-page-title">Credit Account</h1>
+      <p class="dash-page-subtitle">Add money to any user's account</p>
+    </div>
+
+    <div class="glass-card admin-credit-form">
+      <form [formGroup]="creditForm" (ngSubmit)="onCreditSubmit()">
+        <div class="glass-input-group">
+          <label class="glass-label" for="credit-account">Account Number</label>
+          <input id="credit-account" class="glass-input" type="text" 
+            formControlName="accountNumber" placeholder="Enter account number" />
+          @if (creditForm.get('accountNumber')?.invalid && creditForm.get('accountNumber')?.touched) {
+            <span class="glass-error-text">Account number is required</span>
+          }
+        </div>
+
+        <div class="glass-input-group">
+          <label class="glass-label" for="credit-amount">Amount (₹)</label>
+          <input id="credit-amount" class="glass-input" type="number" step="0.01" 
+            formControlName="amount" placeholder="Enter amount to credit" />
+          @if (creditForm.get('amount')?.invalid && creditForm.get('amount')?.touched) {
+            <span class="glass-error-text">Valid amount is required</span>
+          }
+        </div>
+
+        <div class="glass-input-group">
+          <label class="glass-label" for="credit-remarks">Remarks (Optional)</label>
+          <textarea id="credit-remarks" class="glass-input" rows="3"
+            formControlName="remarks" placeholder="Enter remarks for this credit..."></textarea>
+        </div>
+
+        <button type="submit" class="glass-btn glass-btn--admin glass-btn--full" [disabled]="loading()">
+          @if (loading()) {
+            <span class="admin-login-spinner"></span>
+            Processing...
+          } @else {
+            💰 Credit Account
+          }
+        </button>
+      </form>
+    </div>
+  }
+
+  <!-- ── REQUEST DETAILS MODAL ────────────────────────────────────────────── -->
+  @if (selectedRequest(); as sr) {
+    <div class="admin-modal-backdrop" (click)="closeDetails()">
+      <div class="glass-card admin-modal glass-animate-in" (click)="$event.stopPropagation()">
+        <div class="admin-modal-top">
+          <div>
+            <h2 class="admin-modal-title">{{ sr.title }} {{ sr.firstName }} {{ sr.middleName }} {{ sr.lastName }}</h2>
+            <span class="admin-status-badge" [class]="'admin-status-badge--' + sr.status.toLowerCase()">{{ sr.status }}</span>
+          </div>
+          <button class="admin-modal-x" (click)="closeDetails()">✕</button>
+        </div>
+
+        <div class="admin-modal-grid">
+          <div class="admin-metric-item"><span>Father's Name</span><strong>{{ sr.fatherName }}</strong></div>
+          <div class="admin-metric-item"><span>Mobile Number</span><strong>{{ sr.mobileNumber }}</strong></div>
+          <div class="admin-metric-item"><span>Email Address</span><strong>{{ sr.email || '-' }}</strong></div>
+          <div class="admin-metric-item"><span>Aadhar Card</span><strong>{{ sr.aadharNumber }}</strong></div>
+          <div class="admin-metric-item"><span>Date of Birth</span><strong>{{ sr.dateOfBirth }}</strong></div>
+          <div class="admin-metric-item"><span>Occupation</span><strong>{{ sr.occupationType }}</strong></div>
+          <div class="admin-metric-item"><span>Source of Income</span><strong>{{ sr.sourceOfIncome }}</strong></div>
+          <div class="admin-metric-item"><span>Annual Income</span><strong>{{ sr.grossAnnualIncome }}</strong></div>
+          <div class="admin-metric-item admin-modal-span-2"><span>Residential Address</span><strong>{{ sr.residentialAddressLine1 }}, {{ sr.residentialCity }}, {{ sr.residentialState }} - {{ sr.residentialPincode }}</strong></div>
+          <div class="admin-metric-item admin-modal-span-2"><span>Permanent Address</span><strong>{{ sr.permanentAddressLine1 }}, {{ sr.permanentCity }}, {{ sr.permanentState }} - {{ sr.permanentPincode }}</strong></div>
+          <div class="admin-metric-item"><span>Debit Card Requested</span><strong>{{ sr.wantsDebitCard ? 'Yes' : 'No' }}</strong></div>
+          <div class="admin-metric-item"><span>Net Banking Opted</span><strong>{{ sr.optForNetBanking ? 'Yes' : 'No' }}</strong></div>
+          @if (sr.rejectionReason) {
+            <div class="admin-metric-item admin-modal-span-2 admin-rejection-box">
+              <span>Rejection Reason</span>
+              <strong>{{ sr.rejectionReason }}</strong>
+            </div>
+          }
+        </div>
+
+        @if (sr.status === 'PENDING') {
+          <div class="admin-modal-actions">
+            <button class="glass-btn glass-btn--primary" (click)="approve(sr.id)" [disabled]="actionLoading()">✅ Approve & Issue A/C</button>
+            <button class="glass-btn glass-btn--danger" (click)="openRejectModal()" [disabled]="actionLoading()">❌ Reject Application</button>
+          </div>
+        }
+        <button class="glass-btn glass-btn--secondary glass-btn--full admin-modal-close" (click)="closeDetails()">Close Window</button>
+      </div>
+    </div>
+  }
+
+  <!-- ── USER DETAILS MODAL ───────────────────────────────────────────────── -->
+  @if (selectedAccount(); as sa) {
+    <div class="admin-modal-backdrop" (click)="closeUserDetails()">
+      <div class="glass-card admin-modal glass-animate-in" (click)="$event.stopPropagation()">
+        <div class="admin-modal-top">
+          <div>
+            <h2 class="admin-modal-title">{{ sa.title }} {{ sa.firstName }} {{ sa.lastName }}</h2>
+            <span class="admin-status-badge admin-status-badge--approved">{{ sa.status }}</span>
+          </div>
+          <button class="admin-modal-x" (click)="closeUserDetails()">✕</button>
+        </div>
+
+        <div class="admin-modal-grid">
+          <div class="admin-metric-item"><span>Account Number</span><strong>{{ sa.accountNumber }}</strong></div>
+          <div class="admin-metric-item"><span>Balance</span><strong>₹{{ formatAmount(sa.balance) }}</strong></div>
+          <div class="admin-metric-item"><span>Account Type</span><strong>{{ sa.accountType }}</strong></div>
+          <div class="admin-metric-item"><span>Mobile Number</span><strong>{{ sa.mobileNumber }}</strong></div>
+          <div class="admin-metric-item"><span>Email</span><strong>{{ sa.email || '-' }}</strong></div>
+          <div class="admin-metric-item"><span>Date of Birth</span><strong>{{ sa.dateOfBirth | date: 'MMM d, y' }}</strong></div>
+          <div class="admin-metric-item"><span>Occupation</span><strong>{{ sa.occupationType }}</strong></div>
+          <div class="admin-metric-item"><span>Debit Card</span><strong>{{ sa.hasDebitCard ? 'Yes' : 'No' }}</strong></div>
+          <div class="admin-metric-item admin-modal-span-2"><span>Address</span><strong>{{ sa.residentialAddressLine1 }}, {{ sa.residentialCity }}, {{ sa.residentialState }} - {{ sa.residentialPincode }}</strong></div>
+          <div class="admin-metric-item"><span>Created</span><strong>{{ sa.createdAt | date: 'MMM d, y' }}</strong></div>
+          <div class="admin-metric-item"><span>Last Updated</span><strong>{{ sa.updatedAt | date: 'MMM d, y' }}</strong></div>
+        </div>
+
+        <button class="glass-btn glass-btn--secondary glass-btn--full admin-modal-close" (click)="closeUserDetails()">Close Window</button>
+      </div>
+    </div>
+  }
+
+  <!-- ── REJECT REASON MODAL ──────────────────────────────────────────────── -->
+  @if (showRejectModal()) {
+    <div class="admin-modal-backdrop">
+      <div class="glass-card admin-modal admin-reject-modal glass-animate-in">
+        <h3>Reject Application</h3>
+        <p class="dash-page-subtitle">Please specify a mandatory rejection reason for the audit trail.</p>
+        <textarea class="glass-input admin-reject-textarea" [(ngModel)]="rejectReason" placeholder="State reason for rejection..."></textarea>
+        <div class="admin-modal-actions">
+          <button class="glass-btn glass-btn--danger" (click)="confirmReject()" [disabled]="!rejectReason.trim() || actionLoading()">Confirm Reject</button>
+          <button class="glass-btn glass-btn--secondary" (click)="showRejectModal.set(false)">Cancel</button>
+        </div>
+      </div>
+    </div>
+  }
+
+</div>

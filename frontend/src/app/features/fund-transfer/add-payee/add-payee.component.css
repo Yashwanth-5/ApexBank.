@@ -1,0 +1,84 @@
+.payee-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-xl);
+  align-items: start;
+}
+
+.payee-form-card,
+.payee-list-card {
+  padding: var(--space-2xl);
+}
+
+.payee-form-card h3,
+.payee-list-card h3 {
+  margin: 0 0 var(--space-lg);
+  font-size: var(--font-size-lg);
+  font-weight: 700;
+}
+
+.payee-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-xl);
+}
+
+.payee-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  padding: var(--space-md) var(--space-lg);
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.4);
+  transition: all var(--transition-fast);
+}
+
+.payee-row:hover {
+  background: rgba(255, 255, 255, 0.7);
+  transform: translateX(4px);
+}
+
+.payee-avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--color-accent-primary), var(--color-accent-secondary));
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+.payee-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.payee-name {
+  font-weight: 700;
+  font-size: var(--font-size-sm);
+}
+
+.payee-account {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+}
+
+.payee-delete-btn {
+  padding: 8px 12px;
+  color: var(--color-accent-danger);
+}
+
+.payee-transfer-btn {
+  margin-top: var(--space-md);
+}
+
+@media (max-width: 800px) {
+  .payee-layout {
+    grid-template-columns: 1fr;
+  }
+}

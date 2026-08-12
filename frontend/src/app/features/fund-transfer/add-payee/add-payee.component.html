@@ -1,0 +1,40 @@
+<div class="glass-animate-in">
+  <h1 class="dash-page-title">Add New Beneficiary</h1>
+  <p class="dash-page-subtitle">Save a payee for quick fund transfers.</p>
+
+  @if (errorMessage()) { <div class="glass-alert glass-alert--error">{{ errorMessage() }}</div> }
+  @if (successMessage()) { <div class="glass-alert glass-alert--success">{{ successMessage() }}</div> }
+
+  <div class="payee-layout">
+    <div class="glass-card payee-form-card">
+      <h3>Add New Beneficiary</h3>
+      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <div class="glass-input-group"><label class="glass-label">Beneficiary Name</label><input class="glass-input" type="text" formControlName="payeeName" /></div>
+        <div class="glass-input-group"><label class="glass-label">Beneficiary Account Number</label><input class="glass-input" type="text" formControlName="payeeAccountNumber" /></div>
+        <div class="glass-input-group"><label class="glass-label">Re-enter Account Number</label><input class="glass-input" type="text" formControlName="confirmPayeeAccountNumber" /></div>
+        <div class="glass-input-group"><label class="glass-label">Nickname (optional)</label><input class="glass-input" type="text" formControlName="nickname" /></div>
+        <button type="submit" class="glass-btn glass-btn--primary glass-btn--full" [disabled]="loading()">{{ loading() ? 'Saving...' : 'Save Beneficiary' }}</button>
+      </form>
+    </div>
+
+    <div class="glass-card payee-list-card">
+      <h3>Saved Beneficiaries</h3>
+      @if (loadingList()) {
+        <p class="dash-empty-text">Loading...</p>
+      } @else if (payees().length === 0) {
+        <p class="dash-empty-text">No beneficiaries saved yet.</p>
+      } @else {
+        <div class="payee-list">
+          @for (p of payees(); track p.id) {
+            <div class="payee-row">
+              <div class="payee-avatar">{{ p.payeeName.charAt(0) }}</div>
+              <div class="payee-info"><div class="payee-name">{{ p.nickname || p.payeeName }}</div><div class="payee-account">{{ p.payeeAccountNumber }}</div></div>
+              <button class="glass-btn glass-btn--secondary payee-delete-btn" (click)="deletePayee(p.id)">🗑️</button>
+            </div>
+          }
+        </div>
+      }
+      <button class="glass-btn glass-btn--primary glass-btn--full payee-transfer-btn" (click)="goToTransfer()">Go to Fund Transfer →</button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,116 @@
+@import './_variables.css';
+@import './_glassmorphism.css';
+
+/* Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+/* ── Reset ── */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-family);
+  color: var(--color-text-primary);
+  background-color: var(--color-bg-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button, input, textarea, select {
+  font-family: var(--font-family);
+}
+
+/* ── Global Focus Ring ── */
+*:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+
+/* ── Theme Toggle (Fixed FAB) ── */
+.theme-toggle {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  z-index: 9999;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--color-glass-bg-strong);
+  backdrop-filter: blur(var(--blur-md));
+  -webkit-backdrop-filter: blur(var(--blur-md));
+  border: 1.5px solid var(--color-glass-border);
+  box-shadow: var(--shadow-md);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.15rem;
+  transition:
+    transform var(--transition-spring),
+    background var(--transition-fast),
+    box-shadow var(--transition-fast);
+}
+
+.theme-toggle:hover {
+  transform: scale(1.12) rotate(8deg);
+  box-shadow: var(--shadow-lg);
+}
+
+.theme-toggle:active {
+  transform: scale(0.96);
+}
+
+/* ── Selection ── */
+::selection {
+  background: rgba(10, 132, 255, 0.22);
+  color: var(--color-accent-primary);
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-glass-border);
+  border-radius: var(--radius-full);
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-glass-border-subtle);
+  background-clip: content-box;
+  border: 2px solid transparent;
+}
+
+.dark-theme ::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.12);
+  background-clip: content-box;
+  border: 2px solid transparent;
+}
+
+.dark-theme ::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.20);
+  background-clip: content-box;
+  border: 2px solid transparent;
+}
